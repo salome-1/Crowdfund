@@ -14,10 +14,16 @@ class Topup extends Model
 	       'username' ,'user_name', 'nominal', 'bank', 'user_id', 'proof_image',
 	];
 
-	public function user()
+	public function users()
 	{
 	  return $this->belongsTo('App\User');
 	}
+
+	public function transactions()
+	{
+		return $this->belongsTo('App\User');
+	}
+
 
 	public function isOwner()
 	{

@@ -21,6 +21,11 @@ class Project extends Model
     	return $this->belongsTo('App\User');
     }
 
+    public function transactions()
+    {
+        return $this->belongsTo('App\Transaction');
+    }
+
     public function isOwner()
 	{
         if (Auth::guest())
