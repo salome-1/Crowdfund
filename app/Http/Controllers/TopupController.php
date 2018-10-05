@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use Auth;
 use App\User;
 use App\Topup;
+use App\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -18,7 +19,7 @@ class TopUpController extends Controller
      */
     public function index()
     {
-        $topups = DB::table('topups')->get(); // klo make moderate harus make query builder
+        $topups = DB::table('topups')->get();
         return view('topups.approve', compact('topups'));
     }
 
@@ -40,17 +41,16 @@ class TopUpController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-      {
-          $this->validate($request, [
-              'user_name' => 'required|min:1',
-              'nominal' => 'required',
-              'proof_image' => 'required|mimes:jpeg,jpg,png|max:5000kb',
-          ]);
+    {
+        $this->validate($request, [
+          'user_name' => 'required|min:1',
+          'nominal' => 'required',
+          'proof_image' => 'required|mimes:jpeg,jpg,png|max:5000kb',
+        ]);
         
-          $image = $request->file('proof_image');
-          $fileName = $image->getClientOriginalName() . '.' . time() . '.png';
-          $request->file('proof_image')->storeAs('public/proof_image', $fileName);
-    
+        $image = $request->file('proof_image');
+        $fileName = $image->getClientOriginalName() . '.' . time() . '.png';
+        $request->file('proof_image')->storeAs('public/proof_image', $fileName);
 
         $topups = Topup::create([
             'username' => $request['username'],
@@ -60,12 +60,19 @@ class TopUpController extends Controller
             'user_id' => Auth::user()->id,
             'proof_image' => $fileName,
             'captcha' => 'required|captcha'
-        ]); 
+        ]);
 
-        
-
+        // histori transaksi
+        $transactions = Transaction::create([
+            'user_id' => Auth::user()->id,
+            'topup_id' => $topups->id,
+            'nominal' => $topups->nominal,
+            'transaction_image' => $topups->proof_image,
+            'transaction_type' => 1,
+            'status' => 'Menunggu Persetujuan',
+        ]);
         return redirect('home')->with('msg', 'Selamat, top up saldo berhasil dilakukan!, Admin akan mengecek, Harap menunggu konfirmasi Admin.');
-      }
+    }
 
     /**
      * Display the specified resource.
@@ -101,22 +108,36 @@ class TopUpController extends Controller
     {
         $topups = Topup::withAnyStatus()->where('id', $id)->first();
         $user = User::where('id', $topups->user_id)->first();
+        $transactions = Transaction::where('topup_id', $topups->id)->first();
         switch($request->get('approve'))
         {
             case 0:
                 Topup::postpone($id);
+                $transactions->update([
+                    'status' => 'Ditunda',
+                ]);
                 break;
             case 1:
                 Topup::approve($id);
                 $user->update([
                     'balance' => $user->balance + $topups->nominal ,
                 ]);
+                $transactions->update([
+                    'deposit' => $transactions->deposit + $topups->nominal,
+                    'status' => 'Topup Disetujui',
+                ]);   
                 break;
             case 2:
                 Topup::reject($id);
+                $transactions->update([
+                    'status' => 'Ditolak',
+                ]);
                 break;
             case 3:
                 Topup::postpone($id);
+                $transactions->update([
+                    'status' => 'Ditunda',
+                ]);
                 break;
             default:    
                 break;
