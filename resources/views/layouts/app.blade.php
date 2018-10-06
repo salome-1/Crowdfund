@@ -10,22 +10,29 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    {{-- <script src="{{ asset('js/app.js') }}" defer></script> --}}
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href=" {{ asset('MDB_4.5.11/css/font-awesome.min.css') }} ">
+    <!-- Bootstrap core CSS -->
+    <link href="{{ asset('MDB_4.5.11/css/bootstrap.min.css') }}" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="{{ asset('MDB_4.5.11/css/mdb.min.css') }}" rel="stylesheet">
+    {{-- <link href="{{ asset('css/app.css') }}" rel="stylesheet"> --}}
 </head>
 <body>
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
+                {{ config('app.name', 'Laravel') }}
                 </a>
+                
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -40,46 +47,45 @@
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
                         @guest
+
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('login') }}">{{ __('Masuk') }}</a>
                             </li>
+
                             <li class="nav-item">
                                 @if (Route::has('register'))
                                     <a class="nav-link" href="{{ route('register') }}">{{ __('Daftar') }}</a>
                                 @endif
                             </li>
-                        @else
-                            @if (auth()->user()->isAdmin())
-                                <li class="nav-item">
-                                    <p class="nav-link" >{{ __('Saldo:') }} {{ Auth::user()->balance }}</p>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('home') }}">{{ __('Pemberitahuan') }}</a>
-                                </li>
-                            @else
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('topups.create') }}">{{ __('Saldo:') }} {{ Auth::user()->balance }}</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('home') }}">{{ __('Pemberitahuan') }}</a>
-                                </li>
-                            @endif
-                            
+                                @else
+                                @if (auth()->user()->isAdmin())
+                                    <li class="nav-item">
+                                        <p class="nav-link" >{{ __('Saldo:') }} {{ Auth::user()->balance }}</p>
+                                    </li>
+                                    
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{ route('home') }}">{{ __('Pemberitahuan') }}</a>
+                                    </li>
+                                @else
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{ route('topups.create') }}">{{ __('Saldo:') }} {{ Auth::user()->balance }}</a>
+                                    </li>
+
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{ route('home') }}">{{ __('Pemberitahuan') }}</a>
+                                    </li>
+                                @endif
+
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->username }} <span class="caret"></span>
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('home') }}">
-                                        {{ __('profile') }}
-                                    </a>
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Keluar') }}
-                                    </a>
+                                    <a class="dropdown-item" href="{{ route('home') }}">{{ __('profile') }}</a>
                                     
+                                    <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"> {{ __('Keluar') }} </a>
+
 
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                         @csrf
@@ -94,8 +100,16 @@
         </nav>
 
         <main class="py-4">
-            @yield('content')
+        @yield('content')
         </main>
     </div>
+    <!-- JQuery -->
+    <script type="text/javascript" src="{{ asset('MDB_4.5.11/js/jquery.min.js') }}"></script>
+    <!-- Bootstrap tooltips -->
+    <script type="text/javascript" src="{{ asset('MDB_4.5.11/js/popper.min.js') }}"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript" src="{{ asset('MDB_4.5.11/js/bootstrap.min.js') }}"></script>
+    <!-- MDB core JavaScript -->
+    <script type="text/javascript" src="{{ asset('MDB_4.5.11/js/mdb.min.js') }}"></script>
 </body>
 </html>
