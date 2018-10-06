@@ -7,16 +7,15 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <title>Crowdfund</title>
-
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet" type="text/css">
 
         <!-- Font Awesome -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href=" {{ asset('MDB_4.5.11/css/font-awesome.min.css') }}" >
         <!-- Bootstrap core CSS -->
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet">
+        <link href="{{ asset('MDB_4.5.11/css/bootstrap.min.css') }}" rel="stylesheet" >
         <!-- Material Design Bootstrap -->
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.10/css/mdb.min.css" rel="stylesheet">
+        <link href="{{ asset('MDB_4.5.11/css/mdb.min.css') }}" rel="stylesheet">
         <style media="screen">
           @media (min-width: 800px) and (max-width: 850px) {
               .navbar:not(.top-nav-collapse) {
@@ -98,7 +97,7 @@
           <!-- Collapsible content -->
           <div class="collapse navbar-collapse" id="basicExampleNav">
               <!-- Links -->
-              {{-- ml-auto = ml --}}
+              {{-- ml-auto = mleft --}}
               <ul class="navbar-nav ml-auto">
                 @if (Route::has('login'))
                   @auth
@@ -362,14 +361,15 @@
       </footer>
       <!-- Footer -->
 
+
       <!-- JQuery -->
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+      <script type="text/javascript" src="{{ asset('MDB_4.5.11/js/jquery.min.js') }}"></script>
       <!-- Bootstrap tooltips -->
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.13.0/umd/popper.min.js"></script>
+      <script type="text/javascript" src="{{ asset('MDB_4.5.11/js/popper.min.js') }}"></script>
       <!-- Bootstrap core JavaScript -->
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js"></script>
+      <script type="text/javascript" src="{{ asset('MDB_4.5.11/js/bootstrap.min.js') }}"></script>
       <!-- MDB core JavaScript -->
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.10/js/mdb.min.js"></script>
+      <script type="text/javascript" src="{{ asset('MDB_4.5.11/js/mdb.min.js') }}"></script>
 
       <script>
         new WOW().init();
