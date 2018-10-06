@@ -49,4 +49,9 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->belongsTo('App\Transaction');
     }
+
+    public function slots()
+    {
+        return $this->belongsTo('App\Slot');   
+    }
 }

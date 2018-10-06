@@ -31,12 +31,4 @@ class Transaction extends Model
 	{
 	  return $this->belongsTo('App\Project');
 	}
-
-	public function isOwner()
-	{
-        if (Auth::guest())
-            return false;
-        
-		return Auth::user()->id == $this->user->id;
-	}
 }

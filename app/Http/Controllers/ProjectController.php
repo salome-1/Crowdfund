@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use Auth;
 use App\Project;
 use App\User;
+use App\Slot;
 
 
 use Illuminate\Http\Request;
@@ -80,8 +81,18 @@ class ProjectController extends Controller
             'project_price' => $request['project_price'],
             'user_id' => Auth::user()->id,
             'project_image' => $fileName,
-            // 'slot_price' => $request['project_price'] / $request['slot'],
+            'slot_price' => $request['project_price'] / $request['slot'],
         ]);
+
+
+        // membuat slot
+        for ($i = 0; $i < $projects->slot ; $i++) {
+            $slots = Slot::create([
+                'price' => $projects->slot_price,
+                'project_id' => $projects->id,
+                'project_name' => $projects->title,
+            ]);
+        }
 
         return redirect('projects')->with('msg', 'project berhasil di submit!');
     }
@@ -94,12 +105,14 @@ class ProjectController extends Controller
      */
     public function show($slug)
     {
-        $project = Project::where('slug',$slug)->first();
+        $projects = Project::where('slug',$slug)->first();
         // menampilkan slot di single
         // $slots = Slot::all()->where('nama_project',$slug);
-        if(empty($project)) abort (503);
+        $slots = Slot::all()->where('project_name',$projects->title);
+
+        if(empty($projects)) abort (503);
         // , compact('slots') 
-        return view('projects.single', compact('project'));
+        return view('projects.single', compact('projects', 'slots'));
     }
 
     /**
