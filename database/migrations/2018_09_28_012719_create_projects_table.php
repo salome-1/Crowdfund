@@ -22,8 +22,9 @@ class CreateProjectsTable extends Migration
             $table->text('description');
             $table->integer('project_price');
             $table->integer('slot');
-            // $table->integer('uang_per_slot');
+            $table->integer('slot_price');
             $table->string('project_image');
+            $table->Integer('progress')->default(0);
 
             $table->integer('user_id')->unsigned();
             // $table->softDeletes();

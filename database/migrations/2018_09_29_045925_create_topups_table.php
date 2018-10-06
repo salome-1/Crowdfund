@@ -16,11 +16,11 @@ class CreateTopupsTable extends Migration
         Schema::create('topups', function (Blueprint $table) {
             $table->increments('id');
             $table->string('username')->nullable();
-            $table->string('user_name');
+            $table->string('user_name'); // atas nama bank transfer
             $table->integer('nominal');
             $table->string('bank');
             $table->string('proof_image');
-            $table->smallInteger('status')->default(0);
+            $table->string('status');
             $table->dateTime('moderated_at')->nullable();
             $table->integer('user_id')->unsigned();
             $table->timestamps();
