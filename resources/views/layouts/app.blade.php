@@ -111,5 +111,8 @@
     <script type="text/javascript" src="{{ asset('MDB_4.5.11/js/bootstrap.min.js') }}"></script>
     <!-- MDB core JavaScript -->
     <script type="text/javascript" src="{{ asset('MDB_4.5.11/js/mdb.min.js') }}"></script>
+
+    @yield('addjs')
+
 </body>
 </html>
