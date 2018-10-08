@@ -7,6 +7,7 @@ use Auth;
 use App\Project;
 use App\User;
 use App\Slot;
+use App\Transaction;
 
 
 use Illuminate\Http\Request;
@@ -91,10 +92,12 @@ class ProjectController extends Controller
                 'price' => $projects->slot_price,
                 'project_id' => $projects->id,
                 'project_name' => $projects->title,
+                'project_slug' => $projects->slug,
             ]);
         }
 
-        return redirect('projects')->with('msg', 'project berhasil di submit!');
+        // return redirect('projects')->with('msg', 'project berhasil di submit!');
+        return back()->with('msg', 'project berhasil di submit!');
     }
 
     /**
@@ -105,14 +108,12 @@ class ProjectController extends Controller
      */
     public function show($slug)
     {
-        $projects = Project::where('slug',$slug)->first();
-        // menampilkan slot di single
-        // $slots = Slot::all()->where('nama_project',$slug);
-        $slots = Slot::all()->where('project_name',$projects->title);
+        $project = Project::where('slug',$slug)->first();
+        $slots = Slot::all()->where('project_slug',$project->slug);
+        
+        if(empty($project)) abort (503);
 
-        if(empty($projects)) abort (503);
-        // , compact('slots') 
-        return view('projects.single', compact('projects', 'slots'));
+        return view('projects.single', compact('project', 'slots'));
     }
 
     /**
@@ -141,6 +142,17 @@ class ProjectController extends Controller
         $image = $request->file('project_image');
         $fileName = $image->getClientOriginalName() . '.' . time() . '.png';
         $request->file('project_image')->storeAs('public/project_image', $fileName);
+
+        $this->validate($request, [
+            'title' => 'required|min:3',
+            'opened_at' => 'required|date|before:closed_at',
+            'closed_at' => 'required|date|after:opened_at',
+            'description' => 'required|min:10',
+            'slot' => 'required|min:1|max:100',
+            'project_price' => 'required',
+            'project_image' => 'required|mimes:jpeg,jpg,png|max:5000kb',
+        ]);
+
         if($project->isOwner()){
             $project->update([
                 'title' => $request['title'],
@@ -172,5 +184,41 @@ class ProjectController extends Controller
             $project->delete();
         else abort('500');
         return redirect('projects')->with('msg', 'project berhasil di Hapus!');
+    }
+
+    public function buySlot(Request $request, $slug)
+    {
+        $project = Project::where('slug', $slug)->first();
+        $slots = Slot::all()->where('project_slug', $project->slug);
+        
+        $slot = Slot::where('status', 0)->first();
+
+        if($slot->price <= Auth::user()->balance){
+            $slot->update([
+                'status' => 1,
+                'user_id' => $request['userid'],
+                'user_name' => Auth::user()->username,
+            ]);
+            Auth::user()->update([
+                'balance' => Auth::user()->balance - $slot->price,
+            ]);
+
+            $transaction = Transaction::create([
+                'user_id' => Auth::user()->id,
+                'slot_id' => $slot->id,
+                'project_id' => $slot->project_id,
+                'project_name' => $slot->project_name,
+                'nominal' => $slot->price,
+                'transaction_type' => 2,
+                'credit' => $slot->price,
+                'status' => 'Investasi sedang berlangsung',
+            ]);  
+        }else{
+            // klo saldo ga cukup return ini nb. bikin error message dong kntl!1!1!1!1
+            abort('500');
+        }
+
+        // bikin success message nya juga dong ppx!1!1!1!1
+        return back();
     }
 }
