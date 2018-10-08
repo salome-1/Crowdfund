@@ -9,7 +9,7 @@ class Transaction extends Model
 {
 
 	protected $fillable = [
-	       'user_id' ,'topup_id', 'slot_id', 'project_id', 'transaction_type', 'deposit', 'credit', 'status', 'nominal', 'transaction_image'
+	       'user_id' ,'topup_id', 'slot_id', 'project_id', 'project_name', 'transaction_type', 'deposit', 'credit', 'status', 'nominal', 'transaction_image'
 	];
 
 	public function user()

@@ -12,7 +12,7 @@ class Slot extends Model
     // use SoftDeletes; // 
 	// protected $dates = ['deleted_at'];
 	protected $fillable = [
-		'price', 'project_id', 'project_name', 'status', 'user_id', 'user_name', 
+		'price', 'project_id', 'project_name', 'project_slug', 'status', 'user_id', 'user_name', 
     ];
 
     public function user()

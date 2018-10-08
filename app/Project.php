@@ -13,7 +13,7 @@ class Project extends Model
     // use SoftDeletes; // 
 	// protected $dates = ['deleted_at'];
 	protected $fillable = [
-		'title', 'slug','opened_at', 'closed_at', 'description', 'project_price','slot', 'user_id', 'project_image', 'slot_price',
+		'title', 'slug','opened_at', 'closed_at', 'description', 'project_price','slot', 'user_id', 'project_image', 'slot_price', 'progress'
     ];
 
     public function user()
