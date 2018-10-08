@@ -1,6 +1,5 @@
 <?php
 
-
 // Route::get('/', function () {
 //     return view('welcome');
 // });
@@ -25,6 +24,7 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::resource('projects', 'ProjectController')->except(['index', 'show', 'create']); // user yang ter-auth bisa memakai fungsi CRUD nya. kecuali user biasa tidak bisa memakain fungsi create
 	Route::resource('topups', 'TopupController')->except(['index','edit']);
 	Route::get('/transaksi', 'TransaksiController@index');
+	Route::put('projects/{project}', 'ProjectController@buySlot');
 });
 
 
