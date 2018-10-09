@@ -31,7 +31,7 @@ class CreateProjectsTable extends Migration
             $table->timestamps();
 
             //foreign key
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
