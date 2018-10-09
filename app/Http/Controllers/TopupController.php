@@ -19,7 +19,9 @@ class TopUpController extends Controller
      */
     public function index()
     {
-        $topups = DB::table('topups')->get();
+        $status = 0;
+        //$topups = DB::table('topups')->get();
+        $topups = DB::table('topups')->get()->where('status',$status);
         return view('topups.approve', compact('topups'));
     }
 
@@ -44,7 +46,9 @@ class TopUpController extends Controller
     {
         $this->validate($request, [
           'user_name' => 'required|min:1',
-          'nominal' => 'required',
+          'nominal' => 'required|integer|max:11',
+          'bank' => 'required',
+          'captcha' => 'required|captcha',
           'proof_image' => 'required|mimes:jpeg,jpg,png|max:5000kb',
         ]);
         
@@ -59,7 +63,7 @@ class TopUpController extends Controller
             'bank' => $request['bank'],
             'user_id' => Auth::user()->id,
             'proof_image' => $fileName,
-            'captcha' => 'required|captcha'
+            //'captcha' => 'required|captcha'
         ]);
 
         // histori transaksi
