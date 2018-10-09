@@ -96,8 +96,8 @@ class ProjectController extends Controller
             ]);
         }
 
-        // return redirect('projects')->with('msg', 'project berhasil di submit!');
-        return back()->with('msg', 'project berhasil di submit!');
+        return redirect('projects')->with('msg', 'project berhasil di submit!');
+        // return back()->with('msg', 'project berhasil di submit!');
     }
 
     /**
