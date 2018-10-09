@@ -30,10 +30,10 @@ class CreateTransactionsTable extends Migration
             $table->string('status')->nullable();
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('topup_id')->references('id')->on('topups');
-            $table->foreign('slot_id')->references('id')->on('slots');
-            // $table->foreign('withdraw_id')->references('id')->on('withdraws');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('topup_id')->references('id')->on('topups')->onDelete('cascade');
+            $table->foreign('slot_id')->references('id')->on('slots')->onDelete('cascade');
+            // $table->foreign('withdraw_id')->references('id')->on('withdraws')->onDelete('cascade');
         });
     }
 
