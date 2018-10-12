@@ -13,7 +13,11 @@ Route::group(['middleware' => ['admin']], function () {
     Route::resource('users', 'adminController');
 	Route::resource('projects', 'ProjectController')->only(['create']); //harus admin yang membuat project
 	Route::resource('topups', 'TopupController')->only(['index','edit']);
+	Route::get('/topups/transaksi', 'TopupController@transaksi');
 	Route::post('topups/{id}','TopupController@update');
+	// profit
+	Route::get('profit/{project}', 'ProfitController@show');
+	Route::post('profit/{project}', 'ProfitController@sendProfit');
 });
 
 // Projects
