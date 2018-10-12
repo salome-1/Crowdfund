@@ -23,7 +23,7 @@ class CreateTransactionsTable extends Migration
             // $table->integer('withdraw_id')->unsigned()->nullable();
             $table->integer('nominal')->unsigned();
             $table->string('transaction_image')->nullable();
-            // 1: topup, 2:beli slot, 3:withdraw
+            // 1: topup, 2:beli slot, 3:profit, 4: withdraw
             $table->smallInteger('transaction_type')->nullable();
             $table->integer('deposit')->default(0);
             $table->integer('credit')->default(0);
